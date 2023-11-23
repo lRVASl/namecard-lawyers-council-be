@@ -16,7 +16,7 @@
     "@nestjs/platform-socket.io": "^9.1.2",
     "@nestjs/schedule": "^2.2.2",
     "@nestjs/swagger": "^7.1.8",
-    "@osd-register/share": "0.0.1",
+    "@namecard-lawyers/share": "0.0.1",
     "@prisma/client": "^4.4.0",
     "axios": "^1.2.6",
     "class-transformer": "^0.5.1",
@@ -90,7 +90,7 @@
   "license": "UNLICENSED",
   "prisma": {
     "schema": "../../libs/prisma/schema.prisma",
-    "seed": "yarn workspace @osd-register/prisma db:seed"
+    "seed": "yarn workspace @namecard-lawyers/prisma db:seed"
   },
   "private": true,
   "scripts": {

@@ -12,6 +12,7 @@ import {
   MasterDataOccupationRepository,
   MasterDataTypeRepository,
   MemberWalkinRepository,
+  NameCardRepository
 } from 'src/repositories';
 
 const services = [
@@ -27,6 +28,7 @@ const services = [
   MasterDataOccupationRepository,
   MasterDataTypeRepository,
   MemberWalkinRepository,
+  NameCardRepository
 ];
 @Module({
   providers: [...services],

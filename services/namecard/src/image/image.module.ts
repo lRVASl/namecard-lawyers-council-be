@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ImageService } from './image.service';
 import { ImageController } from './image.controller';
-import { PrismaModule } from '@osd-register/share';
+import { PrismaModule } from '@namecard-lawyers/share';
 
 @Module({
   imports: [PrismaModule],

@@ -1,5 +1,5 @@
 {
-  "name": "@osd-register/prisma",
+  "name": "@namecard-lawyers/prisma",
   "description": "prisma",
   "version": "1.0.0",
   "dependencies": {

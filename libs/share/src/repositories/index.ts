@@ -9,3 +9,5 @@ export * from './member_status.repository';
 export * from './master_data_occupation.repository';
 export * from './master_data_type.repository';
 export * from './member_walkin.reposittory';
+export * from './namecard.repository';
+

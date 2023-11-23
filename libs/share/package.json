@@ -1,10 +1,10 @@
 {
-  "name": "@osd-register/share",
+  "name": "@namecard-lawyers/share",
   "description": "",
   "version": "0.0.1",
   "author": "",
   "dependencies": {
-    "@osd-register/prisma": "1.0.0",
+    "@namecard-lawyers/prisma": "1.0.0",
     "@nestjs/common": "^9.1.2",
     "@nestjs/config": "^2.1.0",
     "@nestjs/core": "^9.1.2",

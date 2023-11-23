@@ -7,53 +7,32 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
+// import { AppErrorExceptionFilter } from '@namecard-lawyers/share';
 import { MemberService } from './member.service';
 import { Prisma } from '@prisma/client';
+import config from '../configs';
+import { v4 as uuidv4 } from 'uuid';
 
-@Controller('api/member')
+// @UseFilters(AppErrorExceptionFilter)
+@Controller('api/namecard-lawyers')
 export class MemberController {
-  constructor(private readonly memberService: MemberService) {}
+  constructor(private memberService: MemberService) {}
 
-  @Post()
-  create(@Body('data') data: Prisma.memberCreateInput) {
-    return this.memberService.create(data);
+  @Post('/create')
+  create(@Body() data: Prisma.namecardCreateArgs) {
+    return this.memberService.createMany(data);
   }
 
-  @Post('createmany')
-  createMany(@Body('condition') condition: Prisma.memberCreateManyArgs) {
-    return this.memberService.createMany(condition);
-  }
-
-  @Post('findByCondition')
+  @Post('/findbyid')
   findByCondition(
-    @Body('condition')
-    condition: Prisma.memberFindFirstArgsBase,
+    @Body()
+    condition: Prisma.namecardFindFirstArgs,
   ) {
     return this.memberService.findByCondition(condition);
-  }
-
-  @Post(':id')
-  createById(@Body('data') data: Prisma.memberCreateInput) {
-    return this.memberService.createById(data);
   }
 
   @Get()
   findAll() {
     return this.memberService.findAll();
-  }
-
-  @Patch()
-  update(@Body('condition') condition: Prisma.memberUpdateArgs) {
-    return this.memberService.update(condition);
-  }
-
-  @Patch('checkin')
-  checkin(@Body('condition') condition: Prisma.memberUpdateArgs) {
-    return this.memberService.checkin(condition);
-  }
-
-  @Delete(':memberid')
-  remove(@Param('memberid') memberid: number) {
-    return this.memberService.remove(memberid);
   }
 }

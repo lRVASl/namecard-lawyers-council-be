@@ -1,13 +1,13 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { PrismaService } from '@osd-register/share';
+import { PrismaService } from '@namecard-lawyers/share';
 import config from './configs';
 import * as cors from 'cors';
-import { EvoteMainModule } from './app.module';
+import { NamecardMainModule } from './app.module';
 const PORT = config().port;
 
 async function bootstrap() {
-  const app = await NestFactory.create(EvoteMainModule);
+  const app = await NestFactory.create(NamecardMainModule);
 
   const corsOptions = {
     origin: '*',
