@@ -1,0 +1,136 @@
+generator client {
+    provider        = "prisma-client-js"
+    previewFeatures = ["interactiveTransactions"]
+    binaryTargets   = ["native"]
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model events {
+    id            Int             @id @unique @default(autoincrement())
+    topic         String          @db.VarChar(255)
+    detail        String          @db.Text()
+    event_start   Boolean         @default(false) @db.Boolean()
+    createdAt     DateTime        @default(now())
+    updatedAt     DateTime        @default(now())
+    member        member[]
+    member_walkin member_walkin[]
+}
+
+model master_data_groups {
+    id          Int      @id @unique @default(autoincrement())
+    name_groups String   @db.VarChar(255)
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @default(now())
+    member      member[]
+}
+
+model master_data_education {
+    id             Int      @id @unique @default(autoincrement())
+    name_education String   @db.VarChar(255)
+    createdAt      DateTime @default(now())
+    updatedAt      DateTime @default(now())
+    member         member[]
+}
+
+model master_data_occupation {
+    id              Int      @id @unique @default(autoincrement())
+    name_occupation String   @db.VarChar(255)
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @default(now())
+    member          member[]
+}
+
+model master_data_qr {
+    id        Int       @id @unique @default(autoincrement())
+    name_qr   String    @db.VarChar(255)
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @default(now())
+    qr_code   qr_code[]
+}
+
+model pdpa {
+    id        Int      @id @unique @default(autoincrement())
+    text_pdpa String   @db.VarChar(255)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now())
+}
+
+model member {
+    id                       Int                     @id @unique @default(autoincrement())
+    member_number            Int                     @unique @db.Integer()
+    prefix                   String                  @db.VarChar(255)
+    name_th                  String                  @db.VarChar(255)
+    lastname_th              String                  @db.VarChar(255)
+    position                 String                  @db.Text
+    agency                   String                  @db.Text
+    phone_number             String?                 @db.VarChar(50)
+    email                    String                  @db.VarChar(50)
+    institution              String?                 @db.VarChar(255)
+    type_register            Int                     @db.Integer //0 !== walkin 1 === walkin
+    events                   events                  @relation(fields: [eventsId], references: [id])
+    member_status            member_status           @relation(fields: [member_statusId], references: [id])
+    master_data_groups       master_data_groups      @relation(fields: [master_data_groupsId], references: [id])
+    master_data_education    master_data_education?  @relation(fields: [master_data_educationId], references: [id])
+    master_data_occupation   master_data_occupation? @relation(fields: [master_data_occupationId], references: [id])
+    qr_code                  qr_code                 @relation(fields: [qr_uuid], references: [qr_uuid])
+    education_orther         String?                 @db.Text
+    occupation_orther        String?                 @db.Text
+    belong_to                String?                 @db.Text
+    createdAt                DateTime                @default(now())
+    updatedAt                DateTime                @default(now())
+    master_data_groupsId     Int
+    master_data_educationId  Int?
+    master_data_occupationId Int?
+    member_statusId          Int
+    eventsId                 Int
+    qr_uuid                  String
+}
+
+model qr_code {
+    id               Int            @id @unique @default(autoincrement())
+    qr_uuid          String         @unique @default(uuid())
+    qr_image         String         @db.Text
+    master_data_qr   master_data_qr @relation(fields: [master_data_qrId], references: [id])
+    createdAt        DateTime       @default(now())
+    updatedAt        DateTime       @default(now())
+    master_data_qrId Int
+    member           member[]
+}
+
+model member_status {
+    id              Int      @id @unique @default(autoincrement())
+    register_status Boolean  @default(false) @db.Boolean()
+    checkin_status  Boolean  @default(false) @db.Boolean()
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @default(now())
+    member          member[]
+}
+
+model master_data_type {
+    id            Int             @id @unique @default(autoincrement())
+    id_type       Int             @unique @db.Integer
+    type_text     String          @db.VarChar()
+    member_walkin member_walkin[]
+}
+
+model member_walkin {
+    id                 Int              @id @unique @default(autoincrement())
+    number             Int              @db.Integer
+    prefix             String           @db.VarChar()
+    name               String           @db.VarChar()
+    lastname           String           @db.VarChar()
+    position           String?          @db.VarChar()
+    agency             String?          @db.VarChar()
+    signature          String?          @db.VarChar()
+    checkin            Boolean          @default(false) @db.Boolean()
+    master_data_type   master_data_type @relation(fields: [master_data_typeId], references: [id_type])
+    events             events           @relation(fields: [eventsId], references: [id])
+    master_data_typeId Int
+    eventsId           Int
+
+    @@unique([number, master_data_typeId])
+}

@@ -1,2 +1,2 @@
-# namecard-lawyers-council-be
-namecard-lawyers-council-be
+# osd-register-service
+osd-register-service
