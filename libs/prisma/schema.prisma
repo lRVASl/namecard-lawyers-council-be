@@ -137,18 +137,17 @@ model member_walkin {
 
 model namecard {
     id                       Int                     @id @unique @default(autoincrement())
-    member_number            Int                     @unique @db.Integer()
+    member_number             String                  @db.VarChar(255)
     name_th                  String                  @db.VarChar(255)
     lastname_th              String                  @db.VarChar(255)
     name_en                  String                  @db.VarChar(255)
     lastname_en              String                  @db.VarChar(255)
     position                 String                  @db.Text
-    agency                   String                  @db.Text
     phone_number             String?                 @db.VarChar(50)
     email                    String?                  @db.VarChar(50)
     line                     String?                  @db.VarChar(50)
     facebook                 String?                  @db.VarChar(100)
     createdAt                DateTime                @default(now())
     updatedAt                DateTime                @default(now())
-    image                  String
+    image                  String?
 }

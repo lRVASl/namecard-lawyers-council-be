@@ -10,7 +10,7 @@ export class MemberService {
     return this.namecardRepo.createMany(condition);
   }
 
-  async findByCondition(conditionscondition:any) {
+  async findByCondition(conditionscondition: any) {
     const conditions = {
       where: {
         id: Number(conditionscondition.id),
@@ -20,5 +20,18 @@ export class MemberService {
   }
   async findAll() {
     return this.namecardRepo.findAll();
+  }
+
+  async update(condition: Prisma.namecardUpdateArgs) {
+    return this.namecardRepo.update(condition);
+  }
+
+  async remove(id: number) {
+    const condition = {
+      where: {
+        id: Number(id),
+      },
+    } as Prisma.master_data_occupationDeleteArgs;
+    return this.namecardRepo.delete(condition);
   }
 }
