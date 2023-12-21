@@ -44,14 +44,6 @@ model master_data_occupation {
     member          member[]
 }
 
-model master_data_qr {
-    id        Int       @id @unique @default(autoincrement())
-    name_qr   String    @db.VarChar(255)
-    createdAt DateTime  @default(now())
-    updatedAt DateTime  @default(now())
-    qr_code   qr_code[]
-}
-
 model pdpa {
     id        Int      @id @unique @default(autoincrement())
     text_pdpa String   @db.VarChar(255)
@@ -88,6 +80,14 @@ model member {
     member_statusId          Int
     eventsId                 Int
     qr_uuid                  String
+}
+
+model master_data_qr {
+    id        Int       @id @unique @default(autoincrement())
+    name_qr   String    @db.VarChar(255)
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @default(now())
+    qr_code   qr_code[]
 }
 
 model qr_code {
@@ -135,19 +135,30 @@ model member_walkin {
     @@unique([number, master_data_typeId])
 }
 
+model images_namecard {
+    id              Int       @unique @default(autoincrement())
+    idfile          String    @db.VarChar(200)
+    path            String    @db.VarChar(200)
+    namefile        String    @db.VarChar(200)
+    createdAt       DateTime  @default(now())
+    updatedAt       DateTime  @db.Timestamp()
+    namecard        namecard? @relation(fields: [images_namecard], references: [member_number])
+    images_namecard String?
+}
+
 model namecard {
-    id                       Int                     @id @unique @default(autoincrement())
-    member_number             String                  @db.VarChar(255)
-    name_th                  String                  @db.VarChar(255)
-    lastname_th              String                  @db.VarChar(255)
-    name_en                  String                  @db.VarChar(255)
-    lastname_en              String                  @db.VarChar(255)
-    position                 String                  @db.Text
-    phone_number             String?                 @db.VarChar(50)
-    email                    String?                  @db.VarChar(50)
-    line                     String?                  @db.VarChar(50)
-    facebook                 String?                  @db.VarChar(100)
-    createdAt                DateTime                @default(now())
-    updatedAt                DateTime                @default(now())
-    image                  String?
+    id              Int               @id @unique @default(autoincrement())
+    member_number   String            @unique @default(uuid()) @db.VarChar(255)
+    name_th         String            @db.VarChar(255)
+    lastname_th     String            @db.VarChar(255)
+    name_en         String            @db.VarChar(255)
+    lastname_en     String            @db.VarChar(255)
+    position        String            @db.Text
+    phone_number    String?           @db.VarChar(50)
+    email           String?           @db.VarChar(50)
+    line            String?           @db.VarChar(50)
+    facebook        String?           @db.VarChar(100)
+    createdAt       DateTime          @default(now())
+    updatedAt       DateTime          @default(now())
+    images_namecard images_namecard[]
 }

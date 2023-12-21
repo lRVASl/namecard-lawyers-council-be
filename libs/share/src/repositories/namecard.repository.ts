@@ -9,14 +9,23 @@ export class NameCardRepository {
 
   async findAll(option?: { prisma?: TQueryClient }) {
     const prisma = option?.prisma ?? this.prisma;
-    return prisma.namecard.findMany();
+    return prisma.namecard.findMany({
+      include: {
+        images_namecard: true,
+      },
+    });
   }
   async findByCondition(
     condition: Prisma.namecardArgs,
     option?: { prisma?: TQueryClient },
   ) {
     const prisma = option?.prisma ?? this.prisma;
-    return prisma.namecard.findMany(condition);
+    return prisma.namecard.findMany({
+      ...condition,
+      include: {
+        images_namecard: true,
+      },
+    });
   }
 
   async findFirst(
@@ -24,9 +33,12 @@ export class NameCardRepository {
     option?: { prisma?: TQueryClient },
   ) {
     const prisma = option?.prisma ?? this.prisma;
-    return prisma.namecard.findFirst(condition);
+    return prisma.namecard.findFirst({
+      include: {
+        images_namecard: true,
+      },
+    });
   }
-
   async create(
     condition: Prisma.namecardCreateArgs,
     option?: { prisma?: TQueryClient },
@@ -39,9 +51,27 @@ export class NameCardRepository {
     option?: { prisma?: TQueryClient },
   ) {
     const prisma = option?.prisma ?? this.prisma;
-    console.log(`data =>`, data);
+    return prisma.namecard.createMany(data);
+  }
 
-    return prisma.namecard.createMany( data );
+  async createImagesAppointment(
+    data: Prisma.images_namecardCreateInput,
+    option?: { prisma?: TQueryClient },
+  ) {
+    const prisma = option?.prisma ?? this.prisma;
+    return await prisma.images_namecard.create({
+      data,
+    });
+  }
+
+  async getFilesImage(id: string, option?: { prisma?: TQueryClient }) {
+    const prisma = option?.prisma ?? this.prisma;
+    return await prisma.images_namecard.findMany({
+      where: { images_namecard: id },
+      orderBy: {
+        id: 'desc',
+      },
+    });
   }
   async update(
     data: Prisma.namecardUpdateArgs,
@@ -56,5 +86,13 @@ export class NameCardRepository {
   ) {
     const prisma = option?.prisma ?? this.prisma;
     return prisma.namecard.delete(condition);
+  }
+
+  async deleteMany(
+    condition: Prisma.images_namecardDeleteManyArgs,
+    option?: { prisma?: TQueryClient },
+  ) {
+    const prisma = option?.prisma ?? this.prisma;
+    return prisma.images_namecard.deleteMany(condition);
   }
 }
