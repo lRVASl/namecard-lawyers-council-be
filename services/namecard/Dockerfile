@@ -9,7 +9,7 @@ ENV YARN_CACHE_FOLDER=.yarn-cache
 FROM base AS pruner
 RUN yarn global add turbo@1.5.5
 COPY . .
-RUN turbo prune --scope="@osd-register/osd-register" --docker
+RUN turbo prune --scope="@namecard-lawyers/namecard-lawyers" --docker
 RUN yarn global remove turbo
 
 # development dependencies
@@ -31,7 +31,7 @@ FROM base AS builder
 COPY --from=dev-deps /app/ .
 COPY --from=pruner /app/out/full/ .
 RUN yarn generate
-RUN yarn turbo run build --scope="@osd-register/osd-register" --include-dependencies --no-deps
+RUN yarn turbo run build --scope="@namecard-lawyers/namecard-lawyers" --include-dependencies --no-deps
 RUN find . -name node_modules | xargs rm -rf
 
 # reduce size for production
@@ -45,6 +45,6 @@ RUN yarn global remove modclean
 
 FROM base AS runner
 COPY --from=cleaner /app/ .
-WORKDIR /app/services/osd-register
+WORKDIR /app/services/namecard-lawyers
 USER node
 CMD node dist/main

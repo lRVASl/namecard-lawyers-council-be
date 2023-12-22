@@ -16,8 +16,56 @@ let MemberService = class MemberService {
     constructor(namecardRepo) {
         this.namecardRepo = namecardRepo;
     }
+    async createMany(condition) {
+        return this.namecardRepo.createMany(condition);
+    }
+    async uploadFilesImages(id, body) {
+        return body.forEach(async (element) => {
+            const data = {
+                namecard: { connect: { member_number: id } },
+                idfile: element.filename,
+                path: element.path,
+                namefile: element.originalname,
+                updatedAt: new Date(),
+            };
+            return await this.namecardRepo.createImagesAppointment(data);
+        });
+    }
+    async findByCondition(conditionscondition) {
+        const conditions = {
+            where: {
+                id: Number(conditionscondition.id),
+            },
+        };
+        return this.namecardRepo.findByCondition(conditions);
+    }
     async findAll() {
         return this.namecardRepo.findAll();
+    }
+    async update(condition) {
+        return this.namecardRepo.update(condition);
+    }
+    async remove(id, namecardID) {
+        const condition = {
+            where: {
+                id: Number(id),
+            },
+        };
+        const deleteuser = await this.namecardRepo.delete(condition);
+        if (deleteuser) {
+            const conditioniamge = {
+                where: { images_namecard: namecardID },
+            };
+            const deleteImage = await this.namecardRepo.deleteMany(conditioniamge);
+            return deleteImage;
+        }
+        return deleteuser;
+    }
+    async removeImage(images_ghs) {
+        const condition = {
+            where: { images_namecard: images_ghs },
+        };
+        return await this.namecardRepo.deleteMany(condition);
     }
 };
 MemberService = __decorate([

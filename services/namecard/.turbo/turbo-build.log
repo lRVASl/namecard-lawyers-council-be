@@ -1,0 +1,3 @@
+[33m@namecard-lawyers/namecard-lawyers:build[0m: cache hit, replaying output [2me12c04ea05450e97[0m
+[33m@namecard-lawyers/namecard-lawyers:build: [0m$ rimraf dist
+[33m@namecard-lawyers/namecard-lawyers:build: [0m$ nest build
