@@ -13,6 +13,11 @@ export class NameCardRepository {
       include: {
         images_namecard: true,
       },
+      orderBy: [
+        {
+          createdAt: 'asc',
+        },
+      ],
     });
   }
   async findByCondition(
