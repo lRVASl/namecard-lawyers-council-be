@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { NameCardRepository } from '@namecard-lawyers/share';
+import { promises as fsPromises } from 'fs';
 
 import { Prisma } from '@prisma/client';
 
@@ -41,20 +42,47 @@ export class MemberService {
   }
 
   async remove(id: number, namecardID: string) {
+    const idmember = Number(id);
     const condition = {
       where: {
-        id: Number(id),
+        id: idmember,
       },
+      select: { images_namecard: true },
     } as Prisma.namecardDeleteArgs;
-    const deleteuser = await this.namecardRepo.delete(condition);
-    if (deleteuser) {
-      const conditioniamge = {
-        where: { images_namecard: namecardID },
-      } as Prisma.images_namecardDeleteManyArgs;
-      const deleteImage = await this.namecardRepo.deleteMany(conditioniamge);
-      return deleteImage;
+    const product = (await this.namecardRepo.findFirst(condition)) as any;
+    if (product?.images_namecard) {
+      product?.images_namecard.map((image: any) => this.deleteFile(image.path));
     }
-    return deleteuser;
+    if (idmember) {
+      const conditionImages = {
+        where: {
+          id: idmember,
+        },
+      } as Prisma.namecardDeleteArgs;
+      const deleteuser = await this.namecardRepo.delete(conditionImages);
+      return deleteuser;
+    } else {
+      throw new HttpException('BAD REQUEST', HttpStatus.BAD_REQUEST);
+    }
+    return null;
+    // if (deleteuser) {
+    //   const conditioniamge = {
+    //     where: { images_namecard: namecardID },
+    //   } as Prisma.images_namecardDeleteManyArgs;
+    //   const deleteImage = await this.namecardRepo.deleteMany(conditioniamge);
+    //   return deleteImage;
+    // }
+    // return deleteuser;
+  }
+
+  async deleteFile(path: string) {
+    const filePath = `${process.env.PATH_UPLOAD}/${path}`;
+    try {
+      await fsPromises.unlink(filePath);
+      console.log(`File ${path} has been deleted successfully.`);
+    } catch (err) {
+      console.error(`Error deleting file ${path}: ${err.message}`);
+    }
   }
 
   async removeImage(images_ghs: string) {
