@@ -76,7 +76,7 @@ export class MemberService {
   }
 
   async deleteFile(path: string) {
-    const filePath = `${process.env.PATH_UPLOAD}/${path}`;
+    const filePath = `${process.env.PATH_MOUNTDIR_IMAGES}/${path}`;
     try {
       await fsPromises.unlink(filePath);
       console.log(`File ${path} has been deleted successfully.`);
